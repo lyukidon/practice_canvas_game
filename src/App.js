@@ -6,6 +6,7 @@ function App() {
         x: 0,
         y: 0,
     });
+    const movScale = 20;
     const clearCanvas = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
@@ -21,7 +22,6 @@ function App() {
         ctx.strokeRect(pos.x, pos.y, 20, 20);
     };
     const moveCharacter = (e) => {
-        console.log('key')
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         switch (e.keyCode) {
@@ -29,28 +29,28 @@ function App() {
             case 39:
                 setPos((prev) => ({
                     ...prev,
-                    x: pos.x + 10,
+                    x: pos.x + movScale,
                 }));
                 break;
             // Left
             case 37:
                 setPos((prev) => ({
                     ...prev,
-                    x: pos.x - 10,
+                    x: pos.x - movScale,
                 }));
                 break;
             // Up
             case 38:
                 setPos((prev) => ({
                     ...prev,
-                    y: pos.y - 10,
+                    y: pos.y - movScale,
                 }));
                 break;
             // Down
             case 40:
                 setPos((prev) => ({
                     ...prev,
-                    y: pos.y + 10,
+                    y: pos.y + movScale,
                 }));
                 break;
         }
@@ -61,17 +61,15 @@ function App() {
         drawCharacter();
     }, []);
     useEffect(() => {
-        console.log('useEffect-pos');
         document.addEventListener('keydown', moveCharacter);
         drawCharacter();
         return () => {
             document.removeEventListener('keydown', moveCharacter);
-            drawCharacter();
         };
     }, [pos]);
     return (
         <div>
-            <canvas ref={canvasRef} />
+            <canvas ref={canvasRef} width={1000} height={600} />
         </div>
     );
 }
