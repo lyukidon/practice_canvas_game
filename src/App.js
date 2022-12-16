@@ -16,7 +16,7 @@ function App() {
         // const mapData = await (await fetch('map.json')).json();
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        ctx.strokeStyle = '#f00'
+        ctx.strokeStyle = '#f00';
         for (let i = 0; i <= canvas.height / 20; i++) {
             ctx.beginPath();
             ctx.moveTo(0, i * 20);
@@ -29,14 +29,16 @@ function App() {
             ctx.lineTo(i * 20, canvas.height);
             ctx.stroke();
         }
-        ctx.strokeStyle = "#000"
+        ctx.strokeStyle = '#000';
     };
     const drawCharacter = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         clearCanvas();
         drawMap();
-        ctx.strokeRect(pos.x, pos.y, 20, 20);
+        ctx.beginPath();
+        ctx.arc(pos.x+10, pos.y+10, 10, 0, 2 * Math.PI);
+        ctx.stroke();
     };
     const moveCharacter = (e) => {
         const canvas = canvasRef.current;
@@ -72,10 +74,6 @@ function App() {
                 break;
         }
     };
-    useEffect(() => {
-        clearCanvas();
-
-    }, []);
     useEffect(() => {
         document.addEventListener('keydown', moveCharacter);
         drawCharacter();
