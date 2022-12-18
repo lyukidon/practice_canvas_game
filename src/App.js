@@ -6,7 +6,7 @@ function App() {
         x: 0,
         y: 0,
     });
-    const movScale = 20;
+    const scale = 60;
     const clearCanvas = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
@@ -17,16 +17,16 @@ function App() {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         ctx.strokeStyle = '#f00';
-        for (let i = 0; i <= canvas.height / 20; i++) {
+        for (let i = 0; i <= canvas.height / scale; i++) {
             ctx.beginPath();
-            ctx.moveTo(0, i * 20);
-            ctx.lineTo(canvas.width, i * 20);
+            ctx.moveTo(0, i * scale);
+            ctx.lineTo(canvas.width, i * scale);
             ctx.stroke();
         }
-        for (let i = 0; i <= canvas.width / 20; i++) {
+        for (let i = 0; i <= canvas.width / scale; i++) {
             ctx.beginPath();
-            ctx.moveTo(i * 20, 0);
-            ctx.lineTo(i * 20, canvas.height);
+            ctx.moveTo(i * scale, 0);
+            ctx.lineTo(i * scale, canvas.height);
             ctx.stroke();
         }
         ctx.strokeStyle = '#000';
@@ -37,7 +37,13 @@ function App() {
         clearCanvas();
         drawMap();
         ctx.beginPath();
-        ctx.arc(pos.x+10, pos.y+10, 10, 0, 2 * Math.PI);
+        ctx.arc(
+            pos.x + scale / 2,
+            pos.y + scale / 2,
+            scale / 2,
+            0,
+            2 * Math.PI
+        );
         ctx.stroke();
     };
     const moveCharacter = (e) => {
@@ -46,33 +52,42 @@ function App() {
         switch (e.keyCode) {
             // right
             case 39:
-                setPos((prev) => ({
-                    ...prev,
-                    x: pos.x + movScale,
-                }));
+                if (pos.x + scale < canvas.width) {
+                    setPos((prev) => ({
+                        ...prev,
+                        x: pos.x + scale,
+                    }));
+                }
                 break;
             // Left
             case 37:
-                setPos((prev) => ({
-                    ...prev,
-                    x: pos.x - movScale,
-                }));
+                if (pos.x - scale >= 0) {
+                    setPos((prev) => ({
+                        ...prev,
+                        x: pos.x - scale,
+                    }));
+                }
                 break;
             // Up
             case 38:
-                setPos((prev) => ({
-                    ...prev,
-                    y: pos.y - movScale,
-                }));
+                if (pos.y - scale >= 0) {
+                    setPos((prev) => ({
+                        ...prev,
+                        y: pos.y - scale,
+                    }));
+                }
                 break;
             // Down
             case 40:
-                setPos((prev) => ({
-                    ...prev,
-                    y: pos.y + movScale,
-                }));
+                if (pos.y + scale < canvas.height) {
+                    setPos((prev) => ({
+                        ...prev,
+                        y: pos.y + scale,
+                    }));
+                }
                 break;
         }
+        console.log(pos)
     };
     useEffect(() => {
         document.addEventListener('keydown', moveCharacter);
@@ -83,7 +98,7 @@ function App() {
     }, [pos]);
     return (
         <div>
-            <canvas ref={canvasRef} width={1000} height={600} />
+            <canvas ref={canvasRef} width={900} height={600} />
         </div>
     );
 }
