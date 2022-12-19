@@ -34,8 +34,6 @@ function App() {
     const drawCharacter = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        clearCanvas();
-        drawMap();
         ctx.beginPath();
         ctx.arc(
             pos.x + scale / 2,
@@ -87,13 +85,29 @@ function App() {
                 }
                 break;
         }
-        console.log(pos)
+        console.log(pos);
+    };
+    const dropBomb = (e) => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        draw();
+        switch (e.keyCode) {
+            case 16:
+            ctx.fillRect(pos.x, pos.y, scale, scale);
+        }
+    };
+    const draw = () => {
+        clearCanvas();
+        drawMap();
+        drawCharacter();
     };
     useEffect(() => {
         document.addEventListener('keydown', moveCharacter);
-        drawCharacter();
+        draw();
+        document.addEventListener('keydown', dropBomb);
         return () => {
             document.removeEventListener('keydown', moveCharacter);
+            document.removeEventListener('keydown', dropBomb);
         };
     }, [pos]);
     return (
