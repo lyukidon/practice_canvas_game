@@ -12,24 +12,65 @@ function App() {
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     };
+
+    const [map, setMap] = useState([]);
+    useEffect(() => {
+        fetch('map.json')
+            .then((res) => res.json())
+            .then((data) => setMap([...data.map]));
+    }, []);
     const drawMap = () => {
         // const mapData = await (await fetch('map.json')).json();
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        ctx.strokeStyle = '#f00';
-        for (let i = 0; i <= canvas.height / scale; i++) {
-            ctx.beginPath();
-            ctx.moveTo(0, i * scale);
-            ctx.lineTo(canvas.width, i * scale);
-            ctx.stroke();
-        }
-        for (let i = 0; i <= canvas.width / scale; i++) {
-            ctx.beginPath();
-            ctx.moveTo(i * scale, 0);
-            ctx.lineTo(i * scale, canvas.height);
-            ctx.stroke();
-        }
+        /////////////////////////// Delete after Drawing Map ///////////////////////
+        // ctx.strokeStyle = '#f00';
+        // for (let i = 0; i <= canvas.height / scale; i++) {
+        //     ctx.beginPath();
+        //     ctx.moveTo(0, i * scale);
+        //     ctx.lineTo(canvas.width, i * scale);
+        //     ctx.stroke();
+        // }
+        // for (let i = 0; i <= canvas.width / scale; i++) {
+        //     ctx.beginPath();
+        //     ctx.moveTo(i * scale, 0);
+        //     ctx.lineTo(i * scale, canvas.height);
+        //     ctx.stroke();
+        // }
+        // ctx.strokeStyle = '#000';
+        ///////////////////////////////////////////////////
         ctx.strokeStyle = '#000';
+        for (let i = 0; i < map.length; i++) {
+            for (let j = 0; j < map[i].length; j++) {
+                if (map[i][j] === 1) {
+                    if (map[i - 1][j] !== 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(j * scale, i * scale);
+                        ctx.lineTo(j * scale + scale, i * scale);
+                        ctx.stroke();
+                    }
+                    if (map[i + 1][j] !== 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(j * scale, i * scale + scale);
+                        ctx.lineTo(j * scale + scale, i * scale + scale);
+                        ctx.stroke();
+                    }
+                    if (map[i][j - 1] !== 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(j * scale, i * scale);
+                        ctx.lineTo(j * scale, i * scale + scale);
+                        ctx.stroke();
+                    }
+                    if (map[i][j + 1] !== 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(j * scale + scale, i * scale);
+                        ctx.lineTo(j * scale + scale, i * scale + scale);
+                        ctx.stroke();
+                    }
+                    ctx.beginPath();
+                }
+            }
+        }
     };
     const drawCharacter = () => {
         const canvas = canvasRef.current;
@@ -84,22 +125,25 @@ function App() {
                     }));
                 }
                 break;
+            case 16:
+                ctx.fillRect(pos.x, pos.y, scale, scale);
+                break;
         }
-        console.log(pos);
     };
-    const dropBomb = (e) => {
+
+    const [dropBombData, setBombData] = useState({});
+    const dropBomb = (e) => {};
+    const drawBomb = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        draw();
-        switch (e.keyCode) {
-            case 16:
-            ctx.fillRect(pos.x, pos.y, scale, scale);
-        }
     };
     const draw = () => {
         clearCanvas();
         drawMap();
         drawCharacter();
+        if (dropBombData.length < 0) {
+            drawBomb();
+        }
     };
     useEffect(() => {
         document.addEventListener('keydown', moveCharacter);
@@ -109,7 +153,7 @@ function App() {
             document.removeEventListener('keydown', moveCharacter);
             document.removeEventListener('keydown', dropBomb);
         };
-    }, [pos]);
+    }, [pos, map]);
     return (
         <div>
             <canvas ref={canvasRef} width={900} height={600} />
