@@ -24,20 +24,20 @@ function App() {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         /////////////////////////// Delete after Drawing Map ///////////////////////
-        // ctx.strokeStyle = '#f00';
-        // for (let i = 0; i <= canvas.height / scale; i++) {
-        //     ctx.beginPath();
-        //     ctx.moveTo(0, i * scale);
-        //     ctx.lineTo(canvas.width, i * scale);
-        //     ctx.stroke();
-        // }
-        // for (let i = 0; i <= canvas.width / scale; i++) {
-        //     ctx.beginPath();
-        //     ctx.moveTo(i * scale, 0);
-        //     ctx.lineTo(i * scale, canvas.height);
-        //     ctx.stroke();
-        // }
-        // ctx.strokeStyle = '#000';
+        ctx.strokeStyle = '#f00';
+        for (let i = 0; i <= canvas.height / scale; i++) {
+            ctx.beginPath();
+            ctx.moveTo(0, i * scale);
+            ctx.lineTo(canvas.width, i * scale);
+            ctx.stroke();
+        }
+        for (let i = 0; i <= canvas.width / scale; i++) {
+            ctx.beginPath();
+            ctx.moveTo(i * scale, 0);
+            ctx.lineTo(i * scale, canvas.height);
+            ctx.stroke();
+        }
+        ctx.strokeStyle = '#000';
         ///////////////////////////////////////////////////
         ctx.strokeStyle = '#000';
         for (let i = 0; i < map.length; i++) {
