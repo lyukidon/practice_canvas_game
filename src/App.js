@@ -77,8 +77,8 @@ function App() {
         const ctx = canvas.getContext('2d');
         ctx.beginPath();
         ctx.arc(
-            pos.x + scale / 2,
-            pos.y + scale / 2,
+            pos.x*scale + scale / 2,
+            pos.y*scale + scale / 2,
             scale / 2,
             0,
             2 * Math.PI
@@ -91,37 +91,37 @@ function App() {
         switch (e.keyCode) {
             // right
             case 39:
-                if (pos.x + scale < canvas.width) {
+                if ((pos.x + 1)*scale < canvas.width) {
                     setPos((prev) => ({
                         ...prev,
-                        x: pos.x + scale,
+                        x: pos.x + 1,
                     }));
                 }
                 break;
             // Left
             case 37:
-                if (pos.x - scale >= 0) {
+                if ((pos.x - 1)*scale >= 0) {
                     setPos((prev) => ({
                         ...prev,
-                        x: pos.x - scale,
+                        x: pos.x - 1,
                     }));
                 }
                 break;
             // Up
             case 38:
-                if (pos.y - scale >= 0) {
+                if ((pos.y - 1)*scale >= 0) {
                     setPos((prev) => ({
                         ...prev,
-                        y: pos.y - scale,
+                        y: pos.y - 1,
                     }));
                 }
                 break;
             // Down
             case 40:
-                if (pos.y + scale < canvas.height) {
+                if ((pos.y + 1)*scale < canvas.height) {
                     setPos((prev) => ({
                         ...prev,
-                        y: pos.y + scale,
+                        y: pos.y + 1,
                     }));
                 }
                 break;
@@ -157,6 +157,7 @@ function App() {
     return (
         <div>
             <canvas ref={canvasRef} width={900} height={600} />
+            {console.log(pos)}
         </div>
     );
 }
