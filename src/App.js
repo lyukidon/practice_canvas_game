@@ -77,8 +77,8 @@ function App() {
         const ctx = canvas.getContext('2d');
         ctx.beginPath();
         ctx.arc(
-            pos.x*scale + scale / 2,
-            pos.y*scale + scale / 2,
+            pos.x * scale + scale / 2,
+            pos.y * scale + scale / 2,
             scale / 2,
             0,
             2 * Math.PI
@@ -91,40 +91,49 @@ function App() {
         switch (e.keyCode) {
             // right
             case 39:
-                if ((pos.x + 1)*scale < canvas.width) {
-                    setPos((prev) => ({
-                        ...prev,
-                        x: pos.x + 1,
-                    }));
+                if ((pos.x + 1) * scale < canvas.width) {
+                    if (map[pos.y][pos.x + 1] !== 1) {
+                        setPos((prev) => ({
+                            ...prev,
+                            x: pos.x + 1,
+                        }));
+                    }
                 }
                 break;
             // Left
             case 37:
-                if ((pos.x - 1)*scale >= 0) {
-                    setPos((prev) => ({
-                        ...prev,
-                        x: pos.x - 1,
-                    }));
+                if ((pos.x - 1) * scale >= 0) {
+                    if (map[pos.y][pos.x - 1] !== 1) {
+                        setPos((prev) => ({
+                            ...prev,
+                            x: pos.x - 1,
+                        }));
+                    }
                 }
                 break;
             // Up
             case 38:
-                if ((pos.y - 1)*scale >= 0) {
-                    setPos((prev) => ({
-                        ...prev,
-                        y: pos.y - 1,
-                    }));
+                if ((pos.y - 1) * scale >= 0) {
+                    if (map[pos.y - 1][pos.x] !== 1) {
+                        setPos((prev) => ({
+                            ...prev,
+                            y: pos.y - 1,
+                        }));
+                    }
                 }
                 break;
             // Down
             case 40:
-                if ((pos.y + 1)*scale < canvas.height) {
-                    setPos((prev) => ({
-                        ...prev,
-                        y: pos.y + 1,
-                    }));
+                if ((pos.y + 1) * scale < canvas.height) {
+                    if (map[pos.y + 1][pos.x] !== 1) {
+                        setPos((prev) => ({
+                            ...prev,
+                            y: pos.y + 1,
+                        }));
+                    }
                 }
                 break;
+            // shift
             case 16:
                 ctx.fillRect(pos.x, pos.y, scale, scale);
                 break;

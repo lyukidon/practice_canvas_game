@@ -4,9 +4,9 @@
 - React JS
 ## How to Play
 
-## 프로젝트 설명
+## Description
 
-## 할 일
+## To Do
     - [x] 캐릭터 움직이기
     - [ ] 캐릭터 이미지 넣기
     - [ ] 캐릭터 폭탄 놓기 (폭탄 + 2x2)
