@@ -40,40 +40,43 @@ function App() {
         ctx.strokeStyle = '#000';
         ////////////////////////////////////////////////////////////////////////////
         for (let i = 0; i < map.length; i++) {
-            const xlength = map.length / 15;
+            const xlength = 15;
             const xPos = i % 15;
             const yPos = (i / 15) | 0;
             console.log(xPos, yPos);
             if (map[i] !== 0) {
+                // check up
+                if (map[i - xlength] !== 1) {
+                    ctx.beginPath();
+                    ctx.moveTo(xPos * scale, yPos * scale);
+                    ctx.lineTo(xPos * scale + scale, yPos * scale);
+                    ctx.stroke();
+                }
+                // check down
+                if (map[i + xlength] !== 1) {
+                    ctx.beginPath();
+                    ctx.moveTo(xPos * scale, yPos * scale + scale);
+                    ctx.lineTo(xPos * scale + scale, yPos * scale + scale);
+                    ctx.stroke();
+                }
                 // check left
-                // if (map[i - map.length/15] !== 1) {
-                //     ctx.beginPath();
-                //     ctx.moveTo(j * scale, i * scale);
-                //     ctx.lineTo(j * scale + scale, i * scale);
-                //     ctx.stroke();
-                // }
-                // // check right
-                // if (map[i + 1][j] !== 1) {
-                //     ctx.beginPath();
-                //     ctx.moveTo(j * scale, i * scale + scale);
-                //     ctx.lineTo(j * scale + scale, i * scale + scale);
-                //     ctx.stroke();
-                // }
-                // // check up
-                // if (map[i][j - 1] !== 1) {
-                //     ctx.beginPath();
-                //     ctx.moveTo(j * scale, i * scale);
-                //     ctx.lineTo(j * scale, i * scale + scale);
-                //     ctx.stroke();
-                // }
-                // // check down
-                // if (map[i][j + 1] !== 1) {
-                //     ctx.beginPath();
-                //     ctx.moveTo(j * scale + scale, i * scale);
-                //     ctx.lineTo(j * scale + scale, i * scale + scale);
-                //     ctx.stroke();
-                // }
-                // ctx.beginPath();
+                if (i % xlength !== 0){
+                    if (map[i - 1] !== 1){
+                        ctx.beginPath();
+                        ctx.moveTo(xPos * scale, yPos * scale);
+                        ctx.lineTo(xPos * scale, yPos * scale + scale );
+                        ctx.stroke();
+                    }
+                }
+                // check right
+                if (i % xlength !== xlength - 1){
+                    if (map[i + 1] !== 1){
+                        ctx.beginPath();
+                        ctx.moveTo(xPos * scale + scale, yPos * scale);
+                        ctx.lineTo(xPos * scale +scale, yPos * scale + scale );
+                        ctx.stroke();
+                    }
+                }
             }
         }
     };
