@@ -39,59 +39,73 @@ function App() {
         }
         ctx.strokeStyle = '#000';
         ////////////////////////////////////////////////////////////////////////////
+        // 0 :blank, 1 :wall, 2 :bush
         for (let i = 0; i < map.length; i++) {
             const xlength = 15;
             const xPos = i % 15;
             const yPos = (i / 15) | 0;
             console.log(xPos, yPos);
-            if (map[i] !== 0) {
-                // check up
-                if (map[i - xlength] !== 1) {
-                    ctx.beginPath();
-                    ctx.moveTo(xPos * scale, yPos * scale);
-                    ctx.lineTo(xPos * scale + scale, yPos * scale);
-                    ctx.stroke();
-                }
-                // check down
-                if (map[i + xlength] !== 1) {
-                    ctx.beginPath();
-                    ctx.moveTo(xPos * scale, yPos * scale + scale);
-                    ctx.lineTo(xPos * scale + scale, yPos * scale + scale);
-                    ctx.stroke();
-                }
-                // check left
-                if (i % xlength !== 0){
-                    if (map[i - 1] !== 1){
+            switch (map[i]) {
+                case 1:
+                    // check up
+                    if (map[i - xlength] !== 1) {
                         ctx.beginPath();
                         ctx.moveTo(xPos * scale, yPos * scale);
-                        ctx.lineTo(xPos * scale, yPos * scale + scale );
+                        ctx.lineTo(xPos * scale + scale, yPos * scale);
                         ctx.stroke();
                     }
-                }
-                // check right
-                if (i % xlength !== xlength - 1){
-                    if (map[i + 1] !== 1){
+                    // check down
+                    if (map[i + xlength] !== 1) {
                         ctx.beginPath();
-                        ctx.moveTo(xPos * scale + scale, yPos * scale);
-                        ctx.lineTo(xPos * scale +scale, yPos * scale + scale );
+                        ctx.moveTo(xPos * scale, yPos * scale + scale);
+                        ctx.lineTo(xPos * scale + scale, yPos * scale + scale);
                         ctx.stroke();
                     }
-                }
+                    // check left
+                    if (i % xlength !== 0) {
+                        if (map[i - 1] !== 1) {
+                            ctx.beginPath();
+                            ctx.moveTo(xPos * scale, yPos * scale);
+                            ctx.lineTo(xPos * scale, yPos * scale + scale);
+                            ctx.stroke();
+                        }
+                    }
+                    // check right
+                    if (i % xlength !== xlength - 1) {
+                        if (map[i + 1] !== 1) {
+                            ctx.beginPath();
+                            ctx.moveTo(xPos * scale + scale, yPos * scale);
+                            ctx.lineTo(
+                                xPos * scale + scale,
+                                yPos * scale + scale
+                            );
+                            ctx.stroke();
+                        }
+                    }
+                    break;
+                case 2:
+                    ctx.fillStyle = '#008000';
+                    ctx.fillRect(xPos * scale, yPos * scale, scale, scale);
+                    break;
             }
         }
     };
     const drawCharacter = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        ctx.beginPath();
-        ctx.arc(
-            pos.x * scale + scale / 2,
-            pos.y * scale + scale / 2,
-            scale / 2,
-            0,
-            2 * Math.PI
-        );
-        ctx.stroke();
+        switch (map[pos.y * 15 + pos.x]) {
+            case 0:
+                ctx.beginPath();
+                ctx.arc(
+                    pos.x * scale + scale / 2,
+                    pos.y * scale + scale / 2,
+                    scale / 2,
+                    0,
+                    2 * Math.PI
+                );
+                ctx.stroke();
+                break;
+        }
     };
     const moveCharacter = (e) => {
         const canvas = canvasRef.current;
