@@ -7,6 +7,7 @@ function App() {
         y: 0,
     });
     const scale = 60;
+
     const clearCanvas = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
@@ -20,7 +21,6 @@ function App() {
             .then((data) => setMap([...data.map]));
     }, []);
     const drawMap = () => {
-        // const mapData = await (await fetch('map.json')).json();
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         /////////////////////////// Delete after Drawing Map ///////////////////////
@@ -38,37 +38,42 @@ function App() {
             ctx.stroke();
         }
         ctx.strokeStyle = '#000';
-        ///////////////////////////////////////////////////
-        ctx.strokeStyle = '#000';
+        ////////////////////////////////////////////////////////////////////////////
         for (let i = 0; i < map.length; i++) {
-            for (let j = 0; j < map[i].length; j++) {
-                if (map[i][j] === 1) {
-                    if (map[i - 1][j] !== 1) {
-                        ctx.beginPath();
-                        ctx.moveTo(j * scale, i * scale);
-                        ctx.lineTo(j * scale + scale, i * scale);
-                        ctx.stroke();
-                    }
-                    if (map[i + 1][j] !== 1) {
-                        ctx.beginPath();
-                        ctx.moveTo(j * scale, i * scale + scale);
-                        ctx.lineTo(j * scale + scale, i * scale + scale);
-                        ctx.stroke();
-                    }
-                    if (map[i][j - 1] !== 1) {
-                        ctx.beginPath();
-                        ctx.moveTo(j * scale, i * scale);
-                        ctx.lineTo(j * scale, i * scale + scale);
-                        ctx.stroke();
-                    }
-                    if (map[i][j + 1] !== 1) {
-                        ctx.beginPath();
-                        ctx.moveTo(j * scale + scale, i * scale);
-                        ctx.lineTo(j * scale + scale, i * scale + scale);
-                        ctx.stroke();
-                    }
-                    ctx.beginPath();
-                }
+            const xlength = map.length / 15;
+            const xPos = i % 15;
+            const yPos = (i / 15) | 0;
+            console.log(xPos, yPos);
+            if (map[i] !== 0) {
+                // check left
+                // if (map[i - map.length/15] !== 1) {
+                //     ctx.beginPath();
+                //     ctx.moveTo(j * scale, i * scale);
+                //     ctx.lineTo(j * scale + scale, i * scale);
+                //     ctx.stroke();
+                // }
+                // // check right
+                // if (map[i + 1][j] !== 1) {
+                //     ctx.beginPath();
+                //     ctx.moveTo(j * scale, i * scale + scale);
+                //     ctx.lineTo(j * scale + scale, i * scale + scale);
+                //     ctx.stroke();
+                // }
+                // // check up
+                // if (map[i][j - 1] !== 1) {
+                //     ctx.beginPath();
+                //     ctx.moveTo(j * scale, i * scale);
+                //     ctx.lineTo(j * scale, i * scale + scale);
+                //     ctx.stroke();
+                // }
+                // // check down
+                // if (map[i][j + 1] !== 1) {
+                //     ctx.beginPath();
+                //     ctx.moveTo(j * scale + scale, i * scale);
+                //     ctx.lineTo(j * scale + scale, i * scale + scale);
+                //     ctx.stroke();
+                // }
+                // ctx.beginPath();
             }
         }
     };
@@ -140,12 +145,9 @@ function App() {
         }
     };
 
-    const [dropBombData, setBombData] = useState({});
+    const [dropBombData, setBombData] = useState([]);
     const dropBomb = (e) => {};
-    const drawBomb = () => {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-    };
+    const drawBomb = () => {};
     const draw = () => {
         clearCanvas();
         drawMap();
