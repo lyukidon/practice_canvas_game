@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
+import right_png from './asset/image/right.png';
 
 function App() {
     const canvasRef = useRef(null);
-    const [pos, setPos] = useState(20);
+    const [pos, setPos] = useState(0);
     const scale = 60;
 
     const clearCanvas = () => {
@@ -90,14 +91,24 @@ function App() {
             }
         }
     };
-    const drawCharacter = () => {
+    const drawCharacter = (e) => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         const { map, xlength } = mapData;
         const xPos = pos % xlength;
         const yPos = (pos / xlength) | 0;
+        const image = new Image();
+        image.src = right_png;
         switch (map[yPos * xlength + xPos]) {
             case 0:
+                console.log(image.src);
+                ctx.drawImage(
+                    image,
+                    xPos * scale + 15,
+                    yPos * scale,
+                    scale,
+                    scale
+                );
                 ctx.beginPath();
                 ctx.arc(
                     xPos * scale + scale / 2,
@@ -114,6 +125,7 @@ function App() {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         const { map, xlength, ylength } = mapData;
+        console.log(pos);
         switch (e.keyCode) {
             // Up
             case 38:
@@ -126,7 +138,6 @@ function App() {
                 break;
             // Down
             case 40:
-                console.log(pos);
                 if (Math.ceil(pos / xlength) + 1 < ylength) {
                     if (map[pos + xlength] !== 1) {
                         setPos((prev) => prev + xlength);
@@ -150,6 +161,7 @@ function App() {
                 }
                 break;
             // shift
+            // drop bomb
             case 16:
                 ctx.fillRect(pos.x, pos.y, scale, scale);
                 break;
@@ -157,7 +169,10 @@ function App() {
     };
 
     const [dropBombData, setBombData] = useState([]);
-    const dropBomb = (e) => {};
+    const dropBomb = (e) => {
+        if (dropBombData.length <= 3) {
+        }
+    };
     const drawBomb = () => {};
     const draw = () => {
         clearCanvas();
