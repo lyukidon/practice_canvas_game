@@ -1,5 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
-import right_png from './asset/image/right.png';
+import { useState, useRef, useEffect } from "react";
+
+import right_png from "./asset/image/right.png";
+import bomb_png from "./asset/image/bomb.png";
 
 function App() {
     const canvasRef = useRef(null);
@@ -8,7 +10,7 @@ function App() {
 
     const clearCanvas = () => {
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     };
 
@@ -18,15 +20,15 @@ function App() {
         ylength: 0,
     });
     useEffect(() => {
-        fetch('map.json')
+        fetch("map.json")
             .then((res) => res.json())
             .then((data) => setMapData((prev) => ({ ...prev, ...data })));
     }, []);
     const drawMap = () => {
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         /////////////////////////// Delete after Drawing Map ///////////////////////
-        ctx.strokeStyle = '#f00';
+        ctx.strokeStyle = "#f00";
         for (let i = 0; i <= canvas.height / scale; i++) {
             ctx.beginPath();
             ctx.moveTo(0, i * scale);
@@ -39,7 +41,7 @@ function App() {
             ctx.lineTo(i * scale, canvas.height);
             ctx.stroke();
         }
-        ctx.strokeStyle = '#000';
+        ctx.strokeStyle = "#000";
         ////////////////////////////////////////////////////////////////////////////
         // 0 :blank, 1 :wall, 2 :bush
         const { map, xlength } = mapData;
@@ -85,7 +87,7 @@ function App() {
                     }
                     break;
                 case 2:
-                    ctx.fillStyle = '#008000';
+                    ctx.fillStyle = "#008000";
                     ctx.fillRect(xPos * scale, yPos * scale, scale, scale);
                     break;
             }
@@ -93,10 +95,10 @@ function App() {
     };
     const drawCharacter = (e) => {
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         const { map, xlength } = mapData;
         const xPos = pos % xlength;
-        const yPos = (pos / xlength) | 0;
+        const yPos = parseInt(pos / xlength);
         const image = new Image();
         image.src = right_png;
         switch (map[yPos * xlength + xPos]) {
@@ -120,9 +122,9 @@ function App() {
                 break;
         }
     };
-    const moveCharacter = (e) => {
+    const eventCharacter = (e) => {
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         const { map, xlength, ylength } = mapData;
         switch (e.keyCode) {
             // Up
@@ -136,7 +138,7 @@ function App() {
                 break;
             // Down
             case 40:
-                if (parseInt(pos / xlength) < ylength - 1 ) {
+                if (parseInt(pos / xlength) < ylength - 1) {
                     if (map[pos + xlength] !== 1) {
                         setPos((prev) => prev + xlength);
                     }
@@ -158,46 +160,70 @@ function App() {
                     }
                 }
                 break;
-        }
-    };
-
-    const [dropBombData, setBombData] = useState([]);
-    const dropBomb = (e) => {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        switch (e.keyCode) {
+            // shift
+            // drop bomb
             case 16:
-                if (dropBombData.length <= 3) {
-                    setBombData([
-                        ...dropBombData,
-                        {
-                            pos,
-                            time: 3,
-                        },
-                    ]);
-                    ctx.fillRect(pos.x, pos.y, scale, scale);
-                }
+                console.log("shift");
+                setBombData([
+                    ...dropBombData,
+                    {
+                        pos,
+                        time: 3,
+                    },
+                ]);
                 break;
         }
     };
-    const drawBomb = () => {};
+    const [dropBombData, setBombData] = useState([]);
+    useEffect(() => {
+        console.log("interval");
+        let explosion = setInterval(() => {
+            const dropTemp = dropBombData.reduce((save, cur) => {
+                if (cur.time !== 0) {
+                    cur.time--;
+                    save.push(cur);
+                }
+                return save;
+            }, []);
+            setBombData([...dropTemp]);
+            drawBomb();
+        }, 1000);
+        return () => {
+            console.log("clear");
+            console.log(dropBombData);
+            clearInterval(explosion);
+        };
+    }, [dropBombData]);
+    const drawBomb = () => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        const { map, xlength, ylength } = mapData;
+        const image = new Image();
+        image.src = bomb_png;
+        for (let i = 0; i < dropBombData.length; i++) {
+            const bombPos = dropBombData[i].pos;
+            const xPos = bombPos % xlength;
+            const yPos = parseInt(bombPos / xlength);
+            console.log(bombPos);
+            ctx.fillRect(xPos * scale, yPos * scale, scale, scale);
+            // const xPos = bombPos % xlength;
+            // const yPos = parseInt(bombPos / xlength);
+            // ctx.drawImage(image, xPos * scale, yPos * scale, scale, scale);
+        }
+    };
     const draw = () => {
         clearCanvas();
         drawMap();
         drawCharacter();
-        if (dropBombData.length < 0) {
-            drawBomb();
-        }
+        drawBomb();
     };
     useEffect(() => {
-        document.addEventListener('keydown', moveCharacter);
+        document.addEventListener("keydown", eventCharacter);
         draw();
-        document.addEventListener('keydown', dropBomb);
         return () => {
-            document.removeEventListener('keydown', moveCharacter);
-            document.removeEventListener('keydown', dropBomb);
+            document.removeEventListener("keydown", eventCharacter);
         };
-    }, [pos, mapData]);
+    }, [pos, mapData, dropBombData]);
     return (
         <div>
             <canvas ref={canvasRef} width={900} height={600} />
