@@ -6,7 +6,6 @@ import {
     drawBomb,
 } from "./utils/Drawing";
 import { eventCharacter } from "./utils/Event";
-import { mapData } from "./assets/map/1";
 // import right_png from "./assets/image/right.png";
 // import bomb_png from "./assets/image/bomb.png";
 
@@ -54,14 +53,14 @@ function App() {
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        document.addEventListener("keydown", (e) =>
-            eventCharacter(pos, setPos, dropBombData, setBombData, e)
-        );
+        const eventChar = (e) =>
+            eventCharacter(pos, setPos, dropBombData, setBombData, e);
+        document.addEventListener("keydown", eventChar);
         draw(canvas, ctx);
         return () => {
-            document.removeEventListener("keydown", eventCharacter);
+            document.removeEventListener("keydown", eventChar);
         };
-    }, [pos, mapData, dropBombData]);
+    }, [pos, dropBombData]);
     return (
         <div>
             <canvas ref={canvasRef} width={900} height={600} />
