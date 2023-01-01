@@ -163,37 +163,33 @@ function App() {
             // shift
             // drop bomb
             case 16:
-                console.log("shift");
                 setBombData([
                     ...dropBombData,
                     {
                         pos,
-                        time: 3,
+                        time: Date.now(),
                     },
                 ]);
                 break;
         }
     };
     const [dropBombData, setBombData] = useState([]);
-    useEffect(() => {
-        console.log("interval");
-        let explosion = setInterval(() => {
-            const dropTemp = dropBombData.reduce((save, cur) => {
-                if (cur.time !== 0) {
-                    cur.time--;
-                    save.push(cur);
-                }
-                return save;
-            }, []);
-            setBombData([...dropTemp]);
-            drawBomb();
-        }, 1000);
-        return () => {
-            console.log("clear");
-            console.log(dropBombData);
-            clearInterval(explosion);
-        };
-    }, [dropBombData]);
+    
+    useEffect(()=>{
+        let explosion = setInterval(()=>{
+            console.log(dropBombData)
+            setBombData([
+                ...dropBombData.filter((acc)=>{
+                    console.log(Date.now())
+                    return Date.now() - acc.time <= 4000
+                })
+            ])
+        },1000)
+        return ()=>{
+            clearInterval(explosion)
+        }
+    })
+
     const drawBomb = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
@@ -204,7 +200,6 @@ function App() {
             const bombPos = dropBombData[i].pos;
             const xPos = bombPos % xlength;
             const yPos = parseInt(bombPos / xlength);
-            console.log(bombPos);
             ctx.fillRect(xPos * scale, yPos * scale, scale, scale);
             // const xPos = bombPos % xlength;
             // const yPos = parseInt(bombPos / xlength);
