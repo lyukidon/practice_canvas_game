@@ -5,10 +5,11 @@ export const eventCharacter = (
     setPos,
     dropBombData,
     setBombData,
-    e
+    evt
 ) => {
     const map = maps[0];
-    switch (e.keyCode) {
+    console.log(evt)
+    switch (evt.keyCode) {
         // Up
         case 38:
             // prevent moving beyond the map

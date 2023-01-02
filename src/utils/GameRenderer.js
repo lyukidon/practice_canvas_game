@@ -97,7 +97,7 @@ const mapRenderer = (canvas, ctx) => {
     }
 };
 
-const characterRenderer = (canvas, ctx, pos, e) => {
+const characterRenderer = (canvas, ctx, pos) => {
     const xPos = pos % xlength;
     const yPos = parseInt(pos / xlength);
     switch (map[yPos * xlength + xPos]) {
@@ -134,10 +134,10 @@ const bombRenderer = (canvas, ctx, pos, dropBombData) => {
     }
 };
 
-function GameRenderer(canvas, ctx, pos, dropBombData, e) {
+function GameRenderer(canvas, ctx, pos, dropBombData) {
     clearCanvas(canvas, ctx);
     mapRenderer(canvas, ctx);
-    characterRenderer(canvas, ctx, pos, e);
+    characterRenderer(canvas, ctx, pos);
     bombRenderer(canvas, ctx, pos, dropBombData);
 }
 

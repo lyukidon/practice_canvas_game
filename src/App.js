@@ -9,11 +9,23 @@ function App() {
     const [pos, setPos] = useState(0);
     const [dropBombData, setBombData] = useState([]);
 
-    useEffect((e) => {
+    useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
+        GameRenderer(canvas, ctx, pos, dropBombData);
 
-        GameRenderer(canvas, ctx, pos, dropBombData, e);
+        const eventChar = (evt) =>
+            eventCharacter(
+                pos,
+                setPos,
+                dropBombData,
+                setBombData,
+                evt
+            );
+        document.addEventListener("keydown", eventChar);
+        return () => {
+            document.removeEventListener("keydown", eventChar);
+        };
     }, [pos]);
 
     return (
