@@ -1,14 +1,16 @@
 // Default Setup
 
-const gameScreenWidth = 15
-const gameScreenHeight = 10
-const frameRate = 60
-const build = ['EMPTY',"WALL", 'BUSH', 'FOREST', 'BRICK', 'PLAYER1', 'PLAYER2', 'BOMB']
+export const gameScreenWidth = 900;
+export const gameScreenHeight = 600;
+export const xlength = 15;
+export const ylength = 10;
+export const frameRate = 60;
+export const build = ['EMPTY',"WALL", 'BUSH', 'FOREST', 'BRICK', 'PLAYER1', 'PLAYER2', 'BOMB'];
 
 // 게임 지도
 
-const maps = {
-    1: [
+export const maps = [
+    [
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,
         0,2,2,2,0,0,0,0,0,0,0,0,0,1,0,
@@ -20,7 +22,7 @@ const maps = {
         0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     ],
-    2: [
+    [
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,1,2,1,0,0,1,0,0,0,0,0,0,0,0,
         0,2,2,2,0,0,1,0,0,0,0,0,0,1,0,
@@ -32,15 +34,15 @@ const maps = {
         0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     ]
-}
+];
 
 // 게임 리소스
 
-const gameResource = {
+export const gameResource = {
     EMPTY:'LOCATION',
     WALL:'',
     BUSH:'',
     PLAYER1:'',
     PLAYER2:'',
     BOMB:'',
-}
+};

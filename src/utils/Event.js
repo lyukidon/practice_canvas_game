@@ -1,4 +1,4 @@
-import { mapData } from "../assets/map/1";
+import { maps, xlength, ylength } from '../GameData';
 
 export const eventCharacter = (
     pos,
@@ -7,7 +7,7 @@ export const eventCharacter = (
     setBombData,
     e
 ) => {
-    const { map, xlength, ylength } = mapData;
+    const map = maps[0];
     switch (e.keyCode) {
         // Up
         case 38:

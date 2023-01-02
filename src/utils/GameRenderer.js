@@ -1,29 +1,30 @@
-import { mapData } from "../assets/map/1";
-import { scale } from "../gameData";
+import { frameRate, maps, xlength } from "../GameData";
 
-export const clearCanvas = (canvas, ctx) => {
+const map = maps[0];
+console.log(map)
+
+const clearCanvas = (canvas, ctx) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
 
-export const drawMap = (canvas, ctx) => {
+const mapRenderer = (canvas, ctx) => {
     /////////////////////////// Delete after Drawing Map ///////////////////////
     ctx.strokeStyle = "#f00";
-    for (let i = 0; i <= canvas.height / scale; i++) {
+    for (let i = 0; i <= canvas.height / frameRate; i++) {
         ctx.beginPath();
-        ctx.moveTo(0, i * scale);
-        ctx.lineTo(canvas.width, i * scale);
+        ctx.moveTo(0, i * frameRate);
+        ctx.lineTo(canvas.width, i * frameRate);
         ctx.stroke();
     }
-    for (let i = 0; i <= canvas.width / scale; i++) {
+    for (let i = 0; i <= canvas.width / frameRate; i++) {
         ctx.beginPath();
-        ctx.moveTo(i * scale, 0);
-        ctx.lineTo(i * scale, canvas.height);
+        ctx.moveTo(i * frameRate, 0);
+        ctx.lineTo(i * frameRate, canvas.height);
         ctx.stroke();
     }
     ctx.strokeStyle = "#000";
     ////////////////////////////////////////////////////////////////////////////
     // 0 :blank, 1 :wall, 2 :bush
-    const { map, xlength } = mapData;
     for (let i = 0; i < map.length; i++) {
         const xPos = i % xlength;
         const yPos = (i / xlength) | 0;
@@ -32,17 +33,23 @@ export const drawMap = (canvas, ctx) => {
                 // check up
                 if (map[i - xlength] !== 1) {
                     ctx.beginPath();
-                    ctx.moveTo(xPos * scale, yPos * scale);
-                    ctx.lineTo(xPos * scale + scale, yPos * scale);
+                    ctx.moveTo(xPos * frameRate, yPos * frameRate);
+                    ctx.lineTo(
+                        xPos * frameRate + frameRate,
+                        yPos * frameRate
+                    );
                     ctx.stroke();
                 }
                 // check down
                 if (map[i + xlength] !== 1) {
                     ctx.beginPath();
-                    ctx.moveTo(xPos * scale, yPos * scale + scale);
+                    ctx.moveTo(
+                        xPos * frameRate,
+                        yPos * frameRate + frameRate
+                    );
                     ctx.lineTo(
-                        xPos * scale + scale,
-                        yPos * scale + scale
+                        xPos * frameRate + frameRate,
+                        yPos * frameRate + frameRate
                     );
                     ctx.stroke();
                 }
@@ -50,10 +57,13 @@ export const drawMap = (canvas, ctx) => {
                 if (i % xlength !== 0) {
                     if (map[i - 1] !== 1) {
                         ctx.beginPath();
-                        ctx.moveTo(xPos * scale, yPos * scale);
+                        ctx.moveTo(
+                            xPos * frameRate,
+                            yPos * frameRate
+                        );
                         ctx.lineTo(
-                            xPos * scale,
-                            yPos * scale + scale
+                            xPos * frameRate,
+                            yPos * frameRate + frameRate
                         );
                         ctx.stroke();
                     }
@@ -63,12 +73,12 @@ export const drawMap = (canvas, ctx) => {
                     if (map[i + 1] !== 1) {
                         ctx.beginPath();
                         ctx.moveTo(
-                            xPos * scale + scale,
-                            yPos * scale
+                            xPos * frameRate + frameRate,
+                            yPos * frameRate
                         );
                         ctx.lineTo(
-                            xPos * scale + scale,
-                            yPos * scale + scale
+                            xPos * frameRate + frameRate,
+                            yPos * frameRate + frameRate
                         );
                         ctx.stroke();
                     }
@@ -77,36 +87,26 @@ export const drawMap = (canvas, ctx) => {
             case 2:
                 ctx.fillStyle = "#008000";
                 ctx.fillRect(
-                    xPos * scale,
-                    yPos * scale,
-                    scale,
-                    scale
+                    xPos * frameRate,
+                    yPos * frameRate,
+                    frameRate,
+                    frameRate
                 );
                 break;
         }
     }
 };
 
-export const drawCharacter = (canvas, ctx, pos, e) => {
-    const { map, xlength } = mapData;
+const characterRenderer = (canvas, ctx, pos, e) => {
     const xPos = pos % xlength;
     const yPos = parseInt(pos / xlength);
-    // const image = new Image();
-    // image.src = right_png;
     switch (map[yPos * xlength + xPos]) {
         case 0:
-            // ctx.drawImage(
-            //     image,
-            //     xPos * scale + 15,
-            //     yPos * scale,
-            //     scale,
-            //     scale
-            // );
             ctx.beginPath();
             ctx.arc(
-                xPos * scale + scale / 2,
-                yPos * scale + scale / 2,
-                scale / 2,
+                xPos * frameRate + frameRate / 2,
+                yPos * frameRate + frameRate / 2,
+                frameRate / 2,
                 0,
                 2 * Math.PI
             );
@@ -115,17 +115,30 @@ export const drawCharacter = (canvas, ctx, pos, e) => {
     }
 };
 
-export const drawBomb = (canvas, ctx, pos, dropBombData) => {
-    const { map, xlength, ylength } = mapData;
+const bombRenderer = (canvas, ctx, pos, dropBombData) => {
     // const image = new Image();
     // image.src = bomb_png;
     for (let i = 0; i < dropBombData.length; i++) {
         const bombPos = dropBombData[i].pos;
         const xPos = bombPos % xlength;
         const yPos = parseInt(bombPos / xlength);
-        ctx.fillRect(xPos * scale, yPos * scale, scale, scale);
+        ctx.fillRect(
+            xPos * frameRate,
+            yPos * frameRate,
+            frameRate,
+            frameRate
+        );
         // const xPos = bombPos % xlength;
         // const yPos = parseInt(bombPos / xlength);
-        // ctx.drawImage(image, xPos * scale, yPos * scale, scale, scale);
+        // ctx.drawImage(image, xPos * frameRate, yPos * frameRate, frameRate, frameRate);
     }
 };
+
+function GameRenderer(canvas, ctx, pos, dropBombData, e) {
+    clearCanvas(canvas, ctx);
+    mapRenderer(canvas, ctx);
+    characterRenderer(canvas, ctx, pos, e);
+    bombRenderer(canvas, ctx, pos, dropBombData);
+}
+
+export default GameRenderer;
