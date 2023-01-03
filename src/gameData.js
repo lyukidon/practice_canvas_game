@@ -41,7 +41,7 @@ export const maps = [
 export const gameResource = {
     EMPTY:'LOCATION',
     WALL:'',
-    BUSH:'',
+    BUSH:'../assets/image/bush.png',
     PLAYER1:'',
     PLAYER2:'',
     BOMB:'',

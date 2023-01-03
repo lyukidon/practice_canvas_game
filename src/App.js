@@ -26,7 +26,7 @@ function App() {
         return () => {
             document.removeEventListener("keydown", eventChar);
         };
-    }, [pos]);
+    }, [pos, dropBombData]);
 
     return (
         <div>

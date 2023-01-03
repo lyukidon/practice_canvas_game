@@ -1,7 +1,9 @@
-import { frameRate, maps, xlength } from "../GameData";
+import { build, frameRate, maps, xlength } from "../GameData";
+import { gameResource } from "../GameData";
+import bush from "../assets/image/bush.png";
 
 const map = maps[0];
-console.log(map)
+console.log(map);
 
 const clearCanvas = (canvas, ctx) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -85,13 +87,22 @@ const mapRenderer = (canvas, ctx) => {
                 }
                 break;
             case 2:
-                ctx.fillStyle = "#008000";
-                ctx.fillRect(
-                    xPos * frameRate,
-                    yPos * frameRate,
-                    frameRate,
-                    frameRate
-                );
+                console.log("load");
+                const image = new Image();
+                console.log(gameResource[build[2]]);
+                image.src = bush;
+                image.onload = () => {
+                    ctx.drawImage(
+                        image,
+                        xPos * frameRate,
+                        yPos * frameRate,
+                        frameRate + 10,
+                        frameRate + 10
+                    );
+                };
+                console.log(image);
+                // image.src = gameResource[build[2]];
+
                 break;
         }
     }
