@@ -5,7 +5,7 @@ export const gameScreenHeight = 600;
 export const xlength = 15;
 export const ylength = 10;
 export const frameRate = 60;
-export const build = ['EMPTY',"WALL", 'BUSH', 'FOREST', 'BRICK', 'PLAYER1', 'PLAYER2', 'BOMB'];
+export const build = ['EMPTY',"WALL", 'BUSH', 'PLAYER1', 'PLAYER2', 'BOMB'];
 
 // 게임 지도
 

@@ -1,6 +1,7 @@
 import { build, frameRate, maps, xlength } from "../GameData";
 import { gameResource } from "../GameData";
 import bush from "../assets/image/bush.png";
+import wall from '../assets/image/wall.png'
 
 const map = maps[0];
 console.log(map);
@@ -32,77 +33,30 @@ const mapRenderer = (canvas, ctx) => {
         const yPos = (i / xlength) | 0;
         switch (map[i]) {
             case 1:
-                // check up
-                if (map[i - xlength] !== 1) {
-                    ctx.beginPath();
-                    ctx.moveTo(xPos * frameRate, yPos * frameRate);
-                    ctx.lineTo(
-                        xPos * frameRate + frameRate,
-                        yPos * frameRate
-                    );
-                    ctx.stroke();
-                }
-                // check down
-                if (map[i + xlength] !== 1) {
-                    ctx.beginPath();
-                    ctx.moveTo(
-                        xPos * frameRate,
-                        yPos * frameRate + frameRate
-                    );
-                    ctx.lineTo(
-                        xPos * frameRate + frameRate,
-                        yPos * frameRate + frameRate
-                    );
-                    ctx.stroke();
-                }
-                // check left
-                if (i % xlength !== 0) {
-                    if (map[i - 1] !== 1) {
-                        ctx.beginPath();
-                        ctx.moveTo(
-                            xPos * frameRate,
-                            yPos * frameRate
-                        );
-                        ctx.lineTo(
-                            xPos * frameRate,
-                            yPos * frameRate + frameRate
-                        );
-                        ctx.stroke();
-                    }
-                }
-                // check right
-                if (i % xlength !== xlength - 1) {
-                    if (map[i + 1] !== 1) {
-                        ctx.beginPath();
-                        ctx.moveTo(
-                            xPos * frameRate + frameRate,
-                            yPos * frameRate
-                        );
-                        ctx.lineTo(
-                            xPos * frameRate + frameRate,
-                            yPos * frameRate + frameRate
-                        );
-                        ctx.stroke();
-                    }
-                }
-                break;
-            case 2:
-                console.log("load");
-                const image = new Image();
-                console.log(gameResource[build[2]]);
-                image.src = bush;
-                image.onload = () => {
+                const wallImg = new Image();
+                wallImg.src = wall;
+                wallImg.onload = () => {
                     ctx.drawImage(
-                        image,
+                        wallImg,
                         xPos * frameRate,
                         yPos * frameRate,
-                        frameRate + 10,
-                        frameRate + 10
+                        frameRate,
+                        frameRate
                     );
                 };
-                console.log(image);
-                // image.src = gameResource[build[2]];
-
+                break;
+            case 2:
+                const bushImg = new Image();
+                bushImg.src = bush;
+                bushImg.onload = () => {
+                    ctx.drawImage(
+                        bushImg,
+                        xPos * frameRate,
+                        yPos * frameRate-10,
+                        frameRate,
+                        frameRate+20
+                    );
+                };
                 break;
         }
     }
