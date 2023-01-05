@@ -1,7 +1,8 @@
 import { build, frameRate, maps, xlength } from "../GameData";
 import { gameResource } from "../GameData";
-import bush from "../assets/image/bush.png";
-import wall from '../assets/image/wall.png'
+import bush from "../assets/image/bush.jpg";
+import wall from "../assets/image/wall.png";
+import wood from "../assets/image/wood.png";
 
 const map = maps[0];
 console.log(map);
@@ -31,34 +32,27 @@ const mapRenderer = (canvas, ctx) => {
     for (let i = 0; i < map.length; i++) {
         const xPos = i % xlength;
         const yPos = (i / xlength) | 0;
+        const img = new Image();
         switch (map[i]) {
             case 1:
-                const wallImg = new Image();
-                wallImg.src = wall;
-                wallImg.onload = () => {
-                    ctx.drawImage(
-                        wallImg,
-                        xPos * frameRate,
-                        yPos * frameRate,
-                        frameRate,
-                        frameRate
-                    );
-                };
+                img.src = wall;
                 break;
             case 2:
-                const bushImg = new Image();
-                bushImg.src = bush;
-                bushImg.onload = () => {
-                    ctx.drawImage(
-                        bushImg,
-                        xPos * frameRate,
-                        yPos * frameRate-10,
-                        frameRate,
-                        frameRate+20
-                    );
-                };
+                img.src = bush;
+                break;
+            case 3:
+                img.src = wood;
                 break;
         }
+        img.onload = () => {
+            ctx.drawImage(
+                img,
+                xPos * frameRate,
+                yPos * frameRate,
+                frameRate,
+                frameRate
+            );
+        };
     }
 };
 
@@ -87,12 +81,7 @@ const bombRenderer = (canvas, ctx, pos, dropBombData) => {
         const bombPos = dropBombData[i].pos;
         const xPos = bombPos % xlength;
         const yPos = parseInt(bombPos / xlength);
-        ctx.fillRect(
-            xPos * frameRate,
-            yPos * frameRate,
-            frameRate,
-            frameRate
-        );
+        ctx.fillRect(xPos * frameRate, yPos * frameRate, frameRate, frameRate);
         // const xPos = bombPos % xlength;
         // const yPos = parseInt(bombPos / xlength);
         // ctx.drawImage(image, xPos * frameRate, yPos * frameRate, frameRate, frameRate);
