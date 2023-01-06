@@ -1,10 +1,11 @@
-import { maps, xlength, ylength } from '../GameData';
+import { maps, xlength, ylength } from "../GameData";
 
 export const eventCharacter = (
     pos,
     setPos,
     dropBombData,
     setBombData,
+    time,
     evt
 ) => {
     const map = maps[0];
@@ -49,7 +50,7 @@ export const eventCharacter = (
                 ...dropBombData,
                 {
                     pos,
-                    time: Date.now(),
+                    time,
                 },
             ]);
             break;

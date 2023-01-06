@@ -1,25 +1,28 @@
 import { useState, useRef, useEffect } from "react";
+import { useInterval } from "react-use";
 import GameRenderer from "./utils/GameRenderer";
+import Timer from "./utils/Timer";
 import { eventCharacter } from "./utils/Event";
 
 function App() {
-    const [timer, setTimer] = useState(3);
-    const timerRef = useRef(timer);
+    const [time, setTime] = useState(300);
+    const timeRef = useRef(time);
 
     const canvasRef = useRef(null);
     const [pos, setPos] = useState(0);
     const [dropBombData, setBombData] = useState([]);
 
-    useEffect(() => {
-        let reduceTimer = setInterval(() => {
-            timerRef.current--;
-            setTimer((prev) => prev-1);
-            if (timerRef.current === 0) {
-                clearInterval(reduceTimer);
-            }
-        },1000);
-        return ()=>clearInterval(reduceTimer)
-    }, []);
+    useInterval(() => {
+        if (time > 0) {
+            setTime((prev) => prev - 1);
+        }
+        if (dropBombData.length !== 0)
+        setBombData([
+            ...dropBombData.filter((data)=>{
+                return data.time - time < 3
+            })
+        ]);
+    }, 1000);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -27,7 +30,7 @@ function App() {
         GameRenderer(canvas, ctx, pos, dropBombData);
 
         const eventChar = (evt) =>
-            eventCharacter(pos, setPos, dropBombData, setBombData, evt);
+            eventCharacter(pos, setPos, dropBombData, setBombData, time, evt);
         document.addEventListener("keydown", eventChar);
         return () => {
             document.removeEventListener("keydown", eventChar);
@@ -40,8 +43,8 @@ function App() {
             <div>
                 <div>Timer</div>
                 <div>
-                    {parseInt(timer / 60)} :{" "}
-                    {timer % 60 < 10 ? "0" + (timer % 60) : timer % 60}
+                    {parseInt(time / 60)} :{" "}
+                    {time % 60 < 10 ? "0" + (time % 60) : time % 60}
                 </div>
             </div>
         </div>
