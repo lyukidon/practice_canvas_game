@@ -3,6 +3,7 @@ import { gameResource } from "../GameData";
 import bush from "../assets/image/bush.jpg";
 import wall from "../assets/image/wall.png";
 import wood from "../assets/image/wood.png";
+import bomb from "../assets/image/bomb.png";
 
 const map = maps[0];
 console.log(map);
@@ -87,6 +88,10 @@ const bombRenderer = (canvas, ctx, pos, dropBombData) => {
         // ctx.drawImage(image, xPos * frameRate, yPos * frameRate, frameRate, frameRate);
     }
 };
+
+const explosionRenderer = () => {
+
+}
 
 function GameRenderer(canvas, ctx, pos, dropBombData) {
     clearCanvas(canvas, ctx);
