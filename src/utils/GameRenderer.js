@@ -75,29 +75,58 @@ const characterRenderer = (canvas, ctx, pos) => {
     }
 };
 
-const bombRenderer = (canvas, ctx, pos, dropBombData) => {
-    // const image = new Image();
-    // image.src = bomb_png;
+const bombRenderer = (ctx, dropBombData, time) => {
+    const image = new Image();
+    image.src = bomb;
     for (let i = 0; i < dropBombData.length; i++) {
         const bombPos = dropBombData[i].pos;
         const xPos = bombPos % xlength;
         const yPos = parseInt(bombPos / xlength);
-        ctx.fillRect(xPos * frameRate, yPos * frameRate, frameRate, frameRate);
-        // const xPos = bombPos % xlength;
-        // const yPos = parseInt(bombPos / xlength);
-        // ctx.drawImage(image, xPos * frameRate, yPos * frameRate, frameRate, frameRate);
+        image.onload = ctx.drawImage(
+            image,
+            xPos * frameRate,
+            yPos * frameRate,
+            frameRate,
+            frameRate
+        );
+        if (dropBombData[i].time - time > 3)
+        explosionRenderer(ctx, dropBombData[i], time);
+    }
+};
+/**
+ * bombPos : dropBombData[i].pos
+ * duration : dropBombData[i].time - time */
+// prettier-ignore
+const explosionRenderer = (ctx, eachBombData, time) => {
+    const bombPos = eachBombData.pos;
+    const duration = eachBombData.time - time;
+    const explosionRange = duration - 3;
+    console.log(explosionRange)
+    const xPos = bombPos % xlength;
+    const yPos = parseInt(bombPos / xlength);
+    for (let i = 1; i <= 2; i++) {
+        const range = explosionRange * (-1)**i;
+        console.log('range',range)
+        ctx.fillRect(
+            (xPos - range) * frameRate,
+            yPos * frameRate,
+            frameRate,
+            frameRate
+        );
+        ctx.fillRect(
+            xPos * frameRate,
+            (yPos - range) * frameRate,
+            frameRate,
+            frameRate
+        );
     }
 };
 
-const explosionRenderer = () => {
-
-}
-
-function GameRenderer(canvas, ctx, pos, dropBombData) {
+function GameRenderer(canvas, ctx, pos, dropBombData, time) {
     clearCanvas(canvas, ctx);
     mapRenderer(canvas, ctx);
     characterRenderer(canvas, ctx, pos);
-    bombRenderer(canvas, ctx, pos, dropBombData);
+    bombRenderer(ctx, dropBombData, time);
 }
 
 export default GameRenderer;

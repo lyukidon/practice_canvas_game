@@ -19,72 +19,9 @@ function App() {
             setTime((prev) => prev - 1);
             if (dropBombData.length !== 0) {
                 setBombData([
-                    // ...dropBombData.filter((data) => {
-                    //     return data.time - time < 3;
-                    // }),
-                    ...dropBombData.reduce((save, data) => {
-                        console.log(dropBombData)
-                        const bombPos = data.pos;
-                        const xlength = 15;
-                        const frameRate = 60;
-                        const xPos = bombPos % xlength;
-                        const yPos = parseInt(bombPos / xlength);
-                        if (data.time - time < 3) {
-                            save.push(data);
-                        } else if (data.time - time == 3) {
-                            ctx.fillRect(
-                                (xPos - 1) * frameRate,
-                                yPos * frameRate,
-                                frameRate,
-                                frameRate
-                            );
-                            ctx.fillRect(
-                                (xPos + 1) * frameRate,
-                                yPos * frameRate,
-                                frameRate,
-                                frameRate
-                            );
-                            ctx.fillRect(
-                                xPos * frameRate,
-                                (yPos - 1) * frameRate,
-                                frameRate,
-                                frameRate
-                            );
-                            ctx.fillRect(
-                                xPos * frameRate,
-                                (yPos + 1) * frameRate,
-                                frameRate,
-                                frameRate
-                            );
-                        } else if (data.time - time == 3) {
-                            ctx.fillRect(
-                                (xPos - 2) * frameRate,
-                                yPos * frameRate,
-                                frameRate,
-                                frameRate
-                            );
-                            ctx.fillRect(
-                                (xPos + 2) * frameRate,
-                                yPos * frameRate,
-                                frameRate,
-                                frameRate
-                            );
-                            ctx.fillRect(
-                                xPos * frameRate,
-                                (yPos - 2) * frameRate,
-                                frameRate,
-                                frameRate
-                            );
-                            ctx.fillRect(
-                                xPos * frameRate,
-                                (yPos + 2) * frameRate,
-                                frameRate,
-                                frameRate
-                            );
-
-                        }
-                        return save;
-                    }, []),
+                    ...dropBombData.filter((data) => {
+                        return data.time - time < 5;
+                    }),
                 ]);
             }
         }
@@ -93,7 +30,7 @@ function App() {
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        GameRenderer(canvas, ctx, pos, dropBombData);
+        GameRenderer(canvas, ctx, pos, dropBombData, time);
 
         const eventChar = (evt) =>
             eventCharacter(pos, setPos, dropBombData, setBombData, time, evt);
