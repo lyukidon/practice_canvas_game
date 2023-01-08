@@ -6,7 +6,6 @@ import wood from "../assets/image/wood.png";
 import bomb from "../assets/image/bomb.png";
 
 const map = maps[0];
-console.log(map);
 
 const clearCanvas = (canvas, ctx) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -89,24 +88,22 @@ const bombRenderer = (ctx, dropBombData, time) => {
             frameRate,
             frameRate
         );
-        if (dropBombData[i].time - time > 3)
-        explosionRenderer(ctx, dropBombData[i], time);
+        if (dropBombData[i].time - time > 3) {
+            explosionRenderer(ctx, dropBombData[i], time);
+        }
     }
 };
-/**
- * bombPos : dropBombData[i].pos
- * duration : dropBombData[i].time - time */
+
 // prettier-ignore
 const explosionRenderer = (ctx, eachBombData, time) => {
     const bombPos = eachBombData.pos;
     const duration = eachBombData.time - time;
     const explosionRange = duration - 3;
-    console.log(explosionRange)
     const xPos = bombPos % xlength;
     const yPos = parseInt(bombPos / xlength);
     for (let i = 1; i <= 2; i++) {
         const range = explosionRange * (-1)**i;
-        console.log('range',range)
+        ctx.fillStyle = "#f00"
         ctx.fillRect(
             (xPos - range) * frameRate,
             yPos * frameRate,
