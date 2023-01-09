@@ -16,7 +16,7 @@ function App() {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
         if (time > 0) {
-            setTime((prev) => prev - 1);
+            setTime((prev) => prev - 0.5);
             if (dropBombData.length !== 0) {
                 setBombData([
                     ...dropBombData.filter((data) => {
@@ -25,7 +25,7 @@ function App() {
                 ]);
             }
         }
-    }, 1000);
+    }, 500);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -47,7 +47,7 @@ function App() {
                 <div>Timer</div>
                 <div>
                     {parseInt(time / 60)} :{" "}
-                    {time % 60 < 10 ? "0" + (time % 60) : time % 60}
+                    {time % 60 < 10 ? "0" + (time % 60|0) : time % 60|0}
                 </div>
             </div>
         </div>
