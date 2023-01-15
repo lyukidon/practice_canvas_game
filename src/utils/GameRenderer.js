@@ -1,4 +1,4 @@
-import { build, frameRate, maps, xlength } from "../GameData";
+import { build, scale, maps, xlength } from "../GameData";
 import { gameResource } from "../GameData";
 import bush from "../assets/image/bush.jpg";
 import wall from "../assets/image/wall.png";
@@ -14,16 +14,16 @@ const clearCanvas = (canvas, ctx) => {
 const mapRenderer = (canvas, ctx) => {
     /////////////////////////// Delete after Drawing Map ///////////////////////
     ctx.strokeStyle = "#f00";
-    for (let i = 0; i <= canvas.height / frameRate; i++) {
+    for (let i = 0; i <= canvas.height / scale; i++) {
         ctx.beginPath();
-        ctx.moveTo(0, i * frameRate);
-        ctx.lineTo(canvas.width, i * frameRate);
+        ctx.moveTo(0, i * scale);
+        ctx.lineTo(canvas.width, i * scale);
         ctx.stroke();
     }
-    for (let i = 0; i <= canvas.width / frameRate; i++) {
+    for (let i = 0; i <= canvas.width / scale; i++) {
         ctx.beginPath();
-        ctx.moveTo(i * frameRate, 0);
-        ctx.lineTo(i * frameRate, canvas.height);
+        ctx.moveTo(i * scale, 0);
+        ctx.lineTo(i * scale, canvas.height);
         ctx.stroke();
     }
     ctx.strokeStyle = "#000";
@@ -47,10 +47,10 @@ const mapRenderer = (canvas, ctx) => {
         img.onload = () => {
             ctx.drawImage(
                 img,
-                xPos * frameRate,
-                yPos * frameRate,
-                frameRate,
-                frameRate
+                xPos * scale,
+                yPos * scale,
+                scale,
+                scale
             );
         };
     }
@@ -63,9 +63,9 @@ const characterRenderer = (canvas, ctx, pos) => {
         case 0:
             ctx.beginPath();
             ctx.arc(
-                xPos * frameRate + frameRate / 2,
-                yPos * frameRate + frameRate / 2,
-                frameRate / 2,
+                xPos * scale + scale / 2,
+                yPos * scale + scale / 2,
+                scale / 2,
                 0,
                 2 * Math.PI
             );
@@ -83,10 +83,10 @@ const bombRenderer = (ctx, dropBombData, time) => {
         const yPos = parseInt(bombPos / xlength);
         image.onload = ctx.drawImage(
             image,
-            xPos * frameRate,
-            yPos * frameRate,
-            frameRate,
-            frameRate
+            xPos * scale,
+            yPos * scale,
+            scale,
+            scale
         );
         if (dropBombData[i].time - time > 3) {
             explosionRenderer(ctx, dropBombData[i], time);
@@ -105,16 +105,16 @@ const explosionRenderer = (ctx, eachBombData, time) => {
         const range = explosionRange * (-1)**i;
         ctx.fillStyle = "#f00"
         ctx.fillRect(
-            (xPos - range) * frameRate,
-            yPos * frameRate,
-            frameRate,
-            frameRate
+            (xPos - range) * scale,
+            yPos * scale,
+            scale,
+            scale
         );
         ctx.fillRect(
-            xPos * frameRate,
-            (yPos - range) * frameRate,
-            frameRate,
-            frameRate
+            xPos * scale,
+            (yPos - range) * scale,
+            scale,
+            scale
         );
     }
 };

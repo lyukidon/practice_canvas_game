@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useInterval } from "react-use";
 import GameRenderer from "./utils/GameRenderer";
-import Timer from "./utils/Timer";
-import { eventCharacter } from "./utils/Event";
+import { timer } from "./utils/Timer";
+import { eventCharacter } from "./utils/ButtonEvent";
 
 function App() {
     const [time, setTime] = useState(300);
@@ -12,20 +12,7 @@ function App() {
     const [pos, setPos] = useState(0);
     const [dropBombData, setBombData] = useState([]);
 
-    useInterval(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        if (time > 0) {
-            setTime((prev) => prev - 0.5);
-            if (dropBombData.length !== 0) {
-                setBombData([
-                    ...dropBombData.filter((data) => {
-                        return data.time - time < 5;
-                    }),
-                ]);
-            }
-        }
-    }, 500);
+    useInterval(() => timer(time, setTime, dropBombData, setBombData), 500);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -47,7 +34,7 @@ function App() {
                 <div>Timer</div>
                 <div>
                     {parseInt(time / 60)} :{" "}
-                    {time % 60 < 10 ? "0" + (time % 60|0) : time % 60|0}
+                    {time % 60 < 10 ? "0" + (time % 60 | 0) : time % 60 | 0}
                 </div>
             </div>
         </div>

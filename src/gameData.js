@@ -4,7 +4,7 @@ export const gameScreenWidth = 900;
 export const gameScreenHeight = 600;
 export const xlength = 15;
 export const ylength = 10;
-export const frameRate = 60;
+export const scale = 60;
 export const build = [
     "EMPTY",
     "WALL",
