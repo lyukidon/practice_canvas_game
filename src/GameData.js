@@ -4,7 +4,7 @@ export const gameScreenWidth = 900;
 export const gameScreenHeight = 600;
 export const xlength = 15;
 export const ylength = 10;
-export const frameRate = 60;
+export const scale = 60;
 export const build = [
     "EMPTY",
     "WALL",
@@ -14,6 +14,13 @@ export const build = [
     "PLAYER2",
     "BOMB",
 ];
+
+export const keyCodeNum = {
+    "LEFT":37,
+    "UP":38,
+    "RIGHT":39,
+    "DOWN":40,
+};
 
 // 게임 리소스
 
