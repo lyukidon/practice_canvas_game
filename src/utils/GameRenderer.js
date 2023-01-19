@@ -15,13 +15,19 @@ const mapRenderer = (canvas, ctx) => {
     /////////////////////////// Delete after Drawing Map ///////////////////////
     ctx.strokeStyle = "#f00";
     for (let i = 0; i <= canvas.height / scale; i++) {
+    for (let i = 0; i <= canvas.height / scale; i++) {
         ctx.beginPath();
+        ctx.moveTo(0, i * scale);
+        ctx.lineTo(canvas.width, i * scale);
         ctx.moveTo(0, i * scale);
         ctx.lineTo(canvas.width, i * scale);
         ctx.stroke();
     }
     for (let i = 0; i <= canvas.width / scale; i++) {
+    for (let i = 0; i <= canvas.width / scale; i++) {
         ctx.beginPath();
+        ctx.moveTo(i * scale, 0);
+        ctx.lineTo(i * scale, canvas.height);
         ctx.moveTo(i * scale, 0);
         ctx.lineTo(i * scale, canvas.height);
         ctx.stroke();
@@ -60,6 +66,9 @@ const characterRenderer = (canvas, ctx, pos) => {
                 xPos * scale + scale / 2,
                 yPos * scale + scale / 2,
                 scale / 2,
+                xPos * scale + scale / 2,
+                yPos * scale + scale / 2,
+                scale / 2,
                 0,
                 2 * Math.PI
             );
@@ -77,6 +86,10 @@ const bombRenderer = (ctx, dropBombData, time) => {
         const yPos = parseInt(bombPos / xlength);
         image.onload = ctx.drawImage(
             image,
+            xPos * scale,
+            yPos * scale,
+            scale,
+            scale
             xPos * scale,
             yPos * scale,
             scale,
@@ -103,8 +116,16 @@ const explosionRenderer = (ctx, eachBombData, time) => {
             yPos * scale,
             scale,
             scale
+            (xPos - range) * scale,
+            yPos * scale,
+            scale,
+            scale
         );
         ctx.fillRect(
+            xPos * scale,
+            (yPos - range) * scale,
+            scale,
+            scale
             xPos * scale,
             (yPos - range) * scale,
             scale,
