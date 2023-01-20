@@ -1,36 +1,19 @@
 // Default Setup
 
+export const frameRate = 100;
 export const gameScreenWidth = 900;
 export const gameScreenHeight = 600;
-export const xlength = 15;
-export const ylength = 10;
 export const scale = 60;
-export const build = [
-    "EMPTY",
-    "WALL",
-    "BUSH",
-    "WOOD",
-    "PLAYER1",
-    "PLAYER2",
-    "BOMB",
-];
+
+export const BUILD_TYPE = { EMPTY: 0, WALL: 1, BUSH: 2, WOOD: 3 };
+
+export const MOVING_RANGE = 5
 
 export const keyCodeNum = {
-    "LEFT":37,
-    "UP":38,
-    "RIGHT":39,
-    "DOWN":40,
-};
-
-// 게임 리소스
-
-export const gameResource = {
-    EMPTY: "LOCATION",
-    WALL: "",
-    BUSH: "../assets/image/bush.png",
-    PLAYER1: "",
-    PLAYER2: "",
-    BOMB: "",
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40,
 };
 
 // prettier-ignore

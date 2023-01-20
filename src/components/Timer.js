@@ -11,3 +11,5 @@ function Timer({time}) {
         </div>
     );
 }
+
+export default Timer = React.memo(Timer)
