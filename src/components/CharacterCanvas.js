@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useInterval } from "react-use";
 
-import GameRenderer from "../utils/GameRenderer";
 import {frameRate} from '../GameData'
+import CharacterRenderer from "../utils/CharacterRenderer";
 
 const styles = {
     border: "1px solid black",
@@ -14,14 +14,14 @@ const styles = {
 function CharacterCanvas() {
     const canvasRef = useRef(null);
     const [round, setRound] = useState(0);
-    const gameRenderer = new GameRenderer();
+    const characterRenderer = new CharacterRenderer();
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        gameRenderer.init(canvas, ctx);
-        gameRenderer.characterRenderer();
-        const moveCharacter = (e) => gameRenderer.moveCharacter(e);
+        characterRenderer.init(canvas, ctx);
+        characterRenderer.characterRenderer();
+        const moveCharacter = (e) => characterRenderer.moveCharacter(e);
         document.addEventListener("keydown", moveCharacter);
 
         return () => {
@@ -30,7 +30,7 @@ function CharacterCanvas() {
     }, []);
 
     useInterval(() => {
-        gameRenderer.characterRenderer()
+        characterRenderer.characterRenderer()
     }, frameRate);
 
     return <canvas style={styles} ref={canvasRef} width={900} height={600} />;

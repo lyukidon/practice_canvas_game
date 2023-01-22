@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { useInterval } from "react-use";
-import GameRenderer from "./utils/GameRenderer";
 
 import Timer from './components/Timer'
 import MapCanvas from "./components/MapCanvas";

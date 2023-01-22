@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef} from "react";
-import GameRenderer from "../utils/GameRenderer";
+import MapRenderer from "../utils/MapRenderer";
 
 const styles = {
     border: "1px solid black",
@@ -7,12 +7,12 @@ const styles = {
 
 function MapCanvas({round}) {
     const canvasRef = useRef(null);
-    const gameRenderer = new GameRenderer();
+    const mapRenderer = new MapRenderer();
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        gameRenderer.init(canvas, ctx);
-        gameRenderer.mapRenderer(round)
+        mapRenderer.init(canvas, ctx);
+        mapRenderer.mapRenderer(round)
     }, []);
     return <canvas ref={canvasRef} style={styles} width={900} height={600} />;
 }
