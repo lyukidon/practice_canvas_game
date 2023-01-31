@@ -15,7 +15,7 @@ function App() {
     return (
         <div>
             <MapCanvas round = {round} />
-            <CharacterCanvas />
+            <CharacterCanvas round = {round} />
             <Timer time={time} />
         </div>
     );

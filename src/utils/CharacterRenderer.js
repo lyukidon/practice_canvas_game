@@ -1,63 +1,69 @@
-import { BUILD_TYPE, scale, maps, xlength, keyCodeNum, MOVING_RANGE } from "../GameData";
+import {
+    BUILD_TYPE,
+    SCALE,
+    maps,
+    xlength,
+    keyCodeNum,
+    MOVING_RANGE,
+} from "../GameData";
 
 export default class {
-    constructor(canvas, ctx, round) {
+    constructor(){
+        this.xPos = 0;
+        this.yPos = 0
+        this.velocity = 0;
+    }
+
+    init(canvas, ctx, round) {
         this.canvas = canvas;
-        this.ctx = ctx;
+        this.ctx = ctx
         this.round = round;
-        this.xPos = 10;
-        this.yPos = 10;
     }
-
-    init(canvas) {
-        this.canvas = canvas;
-        this.ctx = this.canvas.getContext("2d");
-    }
-
     clearCanvas() {
         const { canvas, ctx } = this;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     eventCharacter(e) {
-        const { canvas, ctx } = this;
-        console.log(this.xPos, this.yPos);
+        console.log('event')
         switch (e.keyCode) {
             case keyCodeNum.UP:
-                this.yPos -= MOVING_RANGE;
+                this.yPos -= SCALE.BLOCK;
                 break;
             case keyCodeNum.DOWN:
-                this.yPos += MOVING_RANGE;
+                this.yPos += SCALE.BLOCK;
                 break;
             case keyCodeNum.LEFT:
-                this.xPos -= MOVING_RANGE;
+                this.xPos -= SCALE.BLOCK;
                 break;
             case keyCodeNum.RIGHT:
-                this.xPos += MOVING_RANGE;
+                this.xPos += SCALE.BLOCK;
                 break;
         }
     }
 
     positionChange(xPos, yPos) {
-        this.xlength = this.canvas.width / scale;
+        this.xlength = this.canvas.width / SCALE.BLOCK;
         if (yPos) {
             // 2 dimensional coordinate
-            return xPos / 60 + ((yPos / 60) | 0) * this.xlength;
+            return (
+                parseInt(xPos / SCALE.BLOCK) +
+                parseInt(yPos / SCALE.BLOCK) * this.xlength
+            );
         } else {
             // 1 dimensional coordinate
         }
     }
 
-    moveCharacter(e) {
-        const { xPos, yPos } = this;
-        const pos = this.positionChange(xPos, yPos);
+    moveCharacter(e){
+        const {xPos,yPos} = this
+        const pos = this.positionChange(xPos, yPos)
         this.eventCharacter(e);
-        console.log(pos);
     }
 
     characterRenderer() {
         let { ctx, xPos, yPos } = this;
         this.clearCanvas();
-        ctx.fillRect(xPos, yPos, scale - 20, scale - 20);
+        ctx.fillRect(xPos+10, yPos+10, SCALE.CHARACTER, SCALE.CHARACTER);
     }
 }

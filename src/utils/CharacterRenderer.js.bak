@@ -1,0 +1,93 @@
+import {
+    BUILD_TYPE,
+    SCALE,
+    maps,
+    xlength,
+    keyCodeNum,
+    MOVING_RANGE,
+} from "../GameData";
+
+export default class {
+    constructor() {
+        this.xPos = 10;
+        this.yPos = 10;
+    }
+
+    init(canvas, round) {
+        this.canvas = canvas;
+        this.ctx = this.canvas.getContext("2d");
+        this.round = round;
+    }
+
+    clearCanvas() {
+        const { canvas, ctx } = this;
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    eventCharacter(e) {
+        const { canvas, ctx } = this;
+        switch (e.keyCode) {
+            case keyCodeNum.UP:
+                this.yPos -= MOVING_RANGE;
+                break;
+            case keyCodeNum.DOWN:
+                this.yPos += MOVING_RANGE;
+                break;
+            case keyCodeNum.LEFT:
+                this.xPos -= MOVING_RANGE;
+                break;
+            case keyCodeNum.RIGHT:
+                this.xPos += MOVING_RANGE;
+                break;
+        }
+    }
+
+    positionChange(xPos, yPos) {
+        this.xlength = this.canvas.width / SCALE.BLOCK;
+        if (yPos) {
+            // 2 dimensional coordinate
+            return (
+                parseInt(xPos / SCALE.BLOCK) +
+                parseInt(yPos / SCALE.BLOCK) * this.xlength
+            );
+        } else {
+            // 1 dimensional coordinate
+        }
+    }
+
+    // checkObstacle(map, corners) {
+    //     let check = true;
+    //     for (let corner of corners) {
+    //         if (
+    //             map[corner] === BUILD_TYPE.WALL ||
+    //             map[corner] === BUILD_TYPE.WOOD
+    //         ) {
+    //             check = false;
+    //         }
+    //     }
+    //     return check;
+    // }
+
+    // moveCharacter(e) {
+    //     const { xPos, yPos } = this;
+    //     const map = maps[this.round];
+    //     const TL = this.positionChange(xPos, yPos);
+    //     const TR = this.positionChange(xPos + SCALE.CHARACTER, yPos);
+    //     const BL = this.positionChange(xPos, yPos + SCALE.CHARACTER);
+    //     const BR = this.positionChange(
+    //         xPos + SCALE.CHARACTER,
+    //         yPos + SCALE.CHARACTER
+    //     );
+    //     const corners = [TL, TR, BL, BR];
+
+    //     if (this.checkObstacle(map, corners) === true) {
+    //         this.eventCharacter(e);
+    //     }
+    // }
+
+    characterRenderer() {
+        let { ctx, xPos, yPos } = this;
+        this.clearCanvas();
+        ctx.fillRect(xPos, yPos, SCALE.CHARACTER, SCALE.CHARACTER);
+    }
+}

@@ -3,7 +3,10 @@
 export const frameRate = 100;
 export const gameScreenWidth = 900;
 export const gameScreenHeight = 600;
-export const scale = 60;
+export const SCALE = {
+    BLOCK: 60,
+    CHARACTER: 40
+}
 
 export const BUILD_TYPE = { EMPTY: 0, WALL: 1, BUSH: 2, WOOD: 3 };
 

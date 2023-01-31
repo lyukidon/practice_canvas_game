@@ -10,9 +10,8 @@ function MapCanvas({round}) {
     const mapRenderer = new MapRenderer();
     useEffect(() => {
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        mapRenderer.init(canvas, ctx);
-        mapRenderer.mapRenderer(round)
+        mapRenderer.init(canvas, round);
+        mapRenderer.mapRenderer()
     }, []);
     return <canvas ref={canvasRef} style={styles} width={900} height={600} />;
 }

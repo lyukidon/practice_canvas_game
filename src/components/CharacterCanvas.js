@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import { useInterval } from "react-use";
 
-import {frameRate} from '../GameData'
+import { frameRate } from "../GameData";
 import CharacterRenderer from "../utils/CharacterRenderer";
 
 const styles = {
@@ -11,15 +11,14 @@ const styles = {
     border: "1px solid black",
 };
 
-function CharacterCanvas() {
+function CharacterCanvas({ round }) {
     const canvasRef = useRef(null);
-    const [round, setRound] = useState(0);
     const characterRenderer = new CharacterRenderer();
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        characterRenderer.init(canvas, ctx);
+        characterRenderer.init(canvas, ctx, round);
         characterRenderer.characterRenderer();
         const moveCharacter = (e) => characterRenderer.moveCharacter(e);
         document.addEventListener("keydown", moveCharacter);
@@ -30,10 +29,10 @@ function CharacterCanvas() {
     }, []);
 
     useInterval(() => {
-        characterRenderer.characterRenderer()
-    }, frameRate);
+        characterRenderer.characterRenderer();
+    }, 100);
 
     return <canvas style={styles} ref={canvasRef} width={900} height={600} />;
 }
 
-export default CharacterCanvas = React.memo(CharacterCanvas);
+export default memo(CharacterCanvas);
