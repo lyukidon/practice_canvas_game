@@ -7,7 +7,7 @@ import CharacterRenderer from "../utils/CharacterRenderer";
 const styles = {
     border: "1px solid black",
     position: "fixed",
-    left: "8px",
+    left: "11px",
     border: "1px solid black",
 };
 

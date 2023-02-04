@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import computerIcon from '../assets/image/computer.png';
+import computerIcon from '../../assets/image/computer.png';
 
 const IconContainer = styled.div`
     display: flex;
@@ -16,20 +16,11 @@ export default ({ icon, title }) => {
     const [toggle, setToggle] = useState(false);
 
     const navigate = useNavigate();
-
     const handleDBClick = useCallback(()=>navigate('/bomberman',{replace:true}),[navigate])
 
     const onToggle = () => {
         setToggle(!toggle);
     }
-
-    useEffect(()=>{
-        const icon = iconRef.current;
-        console.log(iconRef.current)
-        icon.addEventListener('dbclick', ()=>{
-            console.log('hi')
-            handleDBClick()})
-    })
 
     return (
         <IconContainer ref={iconRef} onClick={onToggle} onDoubleClick={handleDBClick}>
