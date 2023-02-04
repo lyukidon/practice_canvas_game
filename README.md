@@ -4,6 +4,9 @@
 
 -   React JS
 -   react-use
+-   React Helmet
+-   React Router
+-   styled-components
 
 ## How to Play
 
