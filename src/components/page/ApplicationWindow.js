@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { GrClose } from "react-icons/gr";
 import { BiSquare } from "react-icons/bi";
 
-const Window = styled.div`
+const WindowTab = styled.div`
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -57,12 +57,77 @@ const Button = styled.button`
 `;
 
 export default ({ name, Application }) => {
+    const applicationRef = useRef(null);
+
+    const [windowPos, setWindowPos] = useState({
+        x:8,
+        y:8
+    });
+
+    const [mousePos, setMousePos] = useState({
+        x:0,
+        y:0,
+    })
+
+    const [mouseDownPos, setMouseDownPos] = useState({
+        x: 0,
+        y: 0,
+    });
+
+    const [mouseMovePos, setMouseMovePos] = useState({
+        x: 0,
+        y: 0,
+    });
+
+    const [drag, setDrag] = useState(false);
+
+    const onDown = (e) => {
+        setDrag(true);
+        setMouseDownPos({
+            ...mouseDownPos,
+            x: e.clientX,
+            y: e.clientY,
+        });
+    };
+
+    const onMove = (e) => {
+        if (drag) {
+            setMouseMovePos({
+                x: e.clientX,
+                y: e.clientY,
+            })
+        }
+    };
+
+    const onUp = () => {
+        setDrag(false);
+        setWindowPos({
+            ...mousePos
+        })
+    };
+
+    useEffect(()=>{
+        setMousePos({
+            x: windowPos.x + mouseMovePos.x - mouseDownPos.x,
+            y: windowPos.y + mouseMovePos.y - mouseDownPos.y,
+        });
+    }, [mouseMovePos])
+
+    useEffect(()=>{
+        console.log('windowPos',windowPos)
+        console.log('mousePos', mousePos)
+        console.log('mouseDownPos', mouseDownPos)
+    },[windowPos, mousePos, mouseDownPos])
+
     return (
-        <Window>
-            <TitleBar>
+        <WindowTab style={{
+            left: mousePos.x,
+            top: mousePos.y
+        }}>
+            <TitleBar onMouseDown={onDown} onMouseMove={onMove} onMouseUp={onUp}>
                 <Title>{name}</Title>
                 <ButtonBox>
-                    <Button onClick={() => console.log("click")}>_</Button>
+                    <Button>_</Button>
                     <Button>
                         <BiSquare />
                     </Button>
@@ -72,6 +137,6 @@ export default ({ name, Application }) => {
                 </ButtonBox>
             </TitleBar>
             <ApplicationBox>{Application}</ApplicationBox>
-        </Window>
+        </WindowTab>
     );
 };
