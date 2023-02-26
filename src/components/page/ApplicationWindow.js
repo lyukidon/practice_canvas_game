@@ -124,7 +124,7 @@ export default ({ name, Application }) => {
             left: mousePos.x,
             top: mousePos.y
         }}>
-            <TitleBar onMouseDown={onDown} onMouseMove={onMove} onMouseUp={onUp}>
+            <TitleBar onMouseDown={onDown} onMouseMove={onMove} onMouseUp={onUp} onMouseLeave={onUp}>
                 <Title>{name}</Title>
                 <ButtonBox>
                     <Button>_</Button>
